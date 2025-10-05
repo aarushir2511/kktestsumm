@@ -4,7 +4,7 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 - [Project Overview](#project-overview)
 - [Objective](#objective)
 - [Tech Stack](#tech-stack)
@@ -16,7 +16,7 @@
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 This project is a **Streamlit web app** that summarizes any online article or blog post into 3 short, meaningful sentences.  
 It uses **Hugging Face’s BART model** (`facebook/bart-large-cnn`) to perform **abstractive summarization**, meaning the model **understands** and **rewrites** content in a natural, human-like way.  
 
@@ -24,7 +24,7 @@ Users can simply enter a **URL** or **paste article text** into the app, click �
 
 ---
 
-## 🎯 Objective
+## Objective
 The goal was to:
 - Build a user-friendly web app that performs summarization.  
 - Learn how to integrate transformer models with Streamlit.  
@@ -32,7 +32,7 @@ The goal was to:
 
 ---
 
-## 🧠 Tech Stack
+## Tech Stack
 | Component | Description |
 |------------|-------------|
 | **Language** | Python |
@@ -43,7 +43,7 @@ The goal was to:
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 1. **Clone the Repository**
    ```bash
@@ -53,25 +53,27 @@ The goal was to:
 2. **Install Dependencies**
    ```bash
    pip install streamlit transformers torch requests beautifulsoup4
-
+   
  3.**Run the App**
   ```bash
   streamlit run app.py
   ```
----
-## 🧩 Step-by-Step Development Log (with Failures)
-### 🧾 Step 1: First Attempt — Basic Summarization
 
-I started by testing a single block of text with:
+
+---
+## Step-by-Step Development Log (with Failures)
+### Step 1: First Attempt — Basic Summarization
+
+ I started by testing a single block of text with:
 ```bash
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 print(summarizer(ARTICLE, max_length=130, min_length=30, do_sample=False))
 ```
 
 
-✅ It worked perfectly for small articles.
+It worked perfectly for small articles.
 
-❌ But when I tried summarizing real news websites, I got:
+But when I tried summarizing real news websites, I got:
 ```bash
 IndexError: index out of range in self
 ```
@@ -79,7 +81,7 @@ IndexError: index out of range in self
 
 ➜ Reason: The text was too long (BART can only handle ~1024 tokens).
 
-### 💡 Step 2: Research and Debugging
+### Step 2: Research and Debugging
 
 I learned that BART crashes if the input exceeds its token limit.
 
@@ -88,9 +90,9 @@ Tried to reduce article text size using slicing:
 text = text[:3000]
 ```
 
-✅ Fixed the error, but ❌ the summary missed important details (since only the first part of the article was used).
+ Fixed the error, but the summary missed important details (since only the first part of the article was used).
 
-### 🧠 Step 3: Final Working Solution — Chunk + Combine
+### Step 3: Final Working Solution — Chunk + Combine
 
 I wrote a chunking function to split long text into smaller pieces:
 
@@ -101,9 +103,9 @@ def chunk_text(text, max_chunk_size=3000):
 ```
 Summarized each chunk separately, then summarized those mini-summaries again.
 
-✅ This method worked for any article length and gave a clean 3-sentence summary.
+This method worked for any article length and gave a clean 3-sentence summary.
 
-### ⚙️ Step 4: Added Web Scraping
+### Step 4: Added Web Scraping
 
 Used requests + BeautifulSoup to fetch article text from any URL:
 ```bash
@@ -114,23 +116,23 @@ text = ' '.join(soup.stripped_strings)
 
 Removed unwanted elements (<script>, <style>) before summarizing.
 
-✅ Now I can summarize any live article directly from the internet.
+Now I can summarize any live article directly from the internet.
 
-### ⚠️ Step 5: Warning About max_length
+### Step 5: Warning About max_length
 
 I noticed a warning:
 ```bash
 Your max_length is set to 130, but input_length is only 99...
 ```
 
-✅ Not an error, just a suggestion.
+Not an error, just a suggestion.
 
 It means the text was short — so I ignored it.
 
 Optional fix: make max_length dynamic based on text length.
 
 ---
-## 🧮 How It Works
+## How It Works
 
 1. **Fetch Article** → Download and clean article text using BeautifulSoup.
 
