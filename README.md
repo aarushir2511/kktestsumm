@@ -53,11 +53,12 @@ The goal was to:
 2. **Install Dependencies**
    ```bash
    pip install streamlit transformers torch requests beautifulsoup4
+
 3.**Run the App**
-   ```bash
+  ```bash
   streamlit run app.py
   ```
-
+---
 ## 🧩 Step-by-Step Development Log (with Failures)
 🧾 Step 1: First Attempt — Basic Summarization
 
